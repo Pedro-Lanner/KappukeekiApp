@@ -30,3 +30,9 @@ $RECYCLE.BIN/
 *.nuget.targets
 packages/
 .ionide/
+
+## Archives and publishing
+*.rar
+*.zip
+*.7z
+publish/

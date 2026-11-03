@@ -148,7 +148,7 @@ namespace KappukeekiApp {
             if (!SessaoUsuario.TemPermissaoMinima(2)) {
                 btnAdicionar.Enabled = false;
                 txtNome.Enabled = false;
-                txtNome.Enabled = false;
+                txtPreco.Enabled = false;
                 txtMassa.Enabled = false;
                 txtRecheio.Enabled = false;
             }
