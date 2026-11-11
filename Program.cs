@@ -24,7 +24,8 @@ namespace KappukeekiApp {
 
                     var admin = new Pessoa {
                         NomePessoa = "Administrador",
-                        EmailPessoa = "admin@kappukeeki.com",
+                        EmailPessoa = "admin@kappukeeki.com" +
+                        "",
                         IdadePessoa = 30,
                         SenhaHash = hash,
                         SenhaSalt = salt,

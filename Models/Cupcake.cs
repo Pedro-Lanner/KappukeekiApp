@@ -6,6 +6,5 @@
         public string SaborMassa { get; set; } = string.Empty;
         public string SaborRecheio { get; set; } = string.Empty;
         public bool Disponivel { get; set; } = true;
-
     }
 }

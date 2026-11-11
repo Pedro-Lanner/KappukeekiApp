@@ -26,6 +26,7 @@
             txtEmail = new TextBox();
             txtSenha = new TextBox();
             btnEntrar = new Button();
+            btnCriarConta = new Button();
             SuspendLayout();
             // 
             // txtEmail
@@ -33,7 +34,7 @@
             txtEmail.Location = new Point(12, 12);
             txtEmail.Name = "txtEmail";
             txtEmail.PlaceholderText = "E-mail";
-            txtEmail.Size = new Size(219, 23);
+            txtEmail.Size = new Size(256, 23);
             txtEmail.TabIndex = 0;
             // 
             // txtSenha
@@ -42,29 +43,43 @@
             txtSenha.Name = "txtSenha";
             txtSenha.PasswordChar = '*';
             txtSenha.PlaceholderText = "Senha";
-            txtSenha.Size = new Size(219, 23);
+            txtSenha.Size = new Size(256, 23);
             txtSenha.TabIndex = 1;
             // 
             // btnEntrar
             // 
             btnEntrar.Location = new Point(12, 70);
             btnEntrar.Name = "btnEntrar";
-            btnEntrar.Size = new Size(219, 23);
+            btnEntrar.Size = new Size(256, 23);
             btnEntrar.TabIndex = 2;
             btnEntrar.Text = "Entrar";
             btnEntrar.UseVisualStyleBackColor = true;
             btnEntrar.Click += btnEntrar_Click;
             // 
+            // btnCriarConta
+            // 
+            btnCriarConta.BackColor = Color.CornflowerBlue;
+            btnCriarConta.Location = new Point(12, 101);
+            btnCriarConta.Name = "btnCriarConta";
+            btnCriarConta.Size = new Size(254, 23);
+            btnCriarConta.TabIndex = 3;
+            btnCriarConta.Text = "Criar conta de cliente";
+            btnCriarConta.UseVisualStyleBackColor = false;
+            btnCriarConta.Click += btnCriarConta_Click;
+            // 
             // LoginForm
             // 
+            AcceptButton = btnEntrar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(340, 147);
+            ClientSize = new Size(278, 136);
+            Controls.Add(btnCriarConta);
             Controls.Add(btnEntrar);
             Controls.Add(txtSenha);
             Controls.Add(txtEmail);
             Name = "LoginForm";
-            Text = "LoginForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Kappukeeki - Login";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -74,5 +89,6 @@
         private TextBox txtEmail;
         private TextBox txtSenha;
         private Button btnEntrar;
+        private Button btnCriarConta;
     }
 }

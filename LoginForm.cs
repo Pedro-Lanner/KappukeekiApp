@@ -31,5 +31,12 @@ namespace KappukeekiApp {
 
             }
         }
+
+        
+            private void btnCriarConta_Click(object sender, EventArgs e) {
+            using var telaCadastro = new CadastroClienteForm();
+            telaCadastro.ShowDialog();
+        
+    }
     }
 }
