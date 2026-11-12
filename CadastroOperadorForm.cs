@@ -23,7 +23,7 @@ namespace KappukeekiApp {
                 MessageBox.Show("Este e-mail já está em uso.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // 1. Garante que existe o setor "Operação" com Nível 1 no banco de dados
+            
             var setorOperador = context.Setores.FirstOrDefault(s => s.NomeSetor == "Operação");
             if (setorOperador == null) {
                 setorOperador = new Setor {
@@ -33,9 +33,9 @@ namespace KappukeekiApp {
                 context.Setores.Add(setorOperador);
                 context.SaveChanges();
             }
-            // 2. Gera a senha criptografada (Hash + Salt)
+            
             var (hash, salt) = PasswordHelper.GerarHashESalt(txtSenha.Text);
-            // 3. Cria a Pessoa vinculada como Funcionario no setor Operação
+            
             var novoOperador = new Pessoa {
                 NomePessoa = txtNome.Text.Trim(),
                 EmailPessoa = emailFormatado,

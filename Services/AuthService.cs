@@ -21,15 +21,15 @@ namespace KappukeekiApp.Services {
             if (usuario == null)
                 return (false, "E-mail ou senha incorretos.");
             
-            // 2. Regra de negócio do UML: Funcionário demitido não pode logar
+            
             if (usuario.Funcionario != null && usuario.Funcionario.Demitido)
                 return (false, "Acesso bloqueado: colaborador desativado da empresa.");
 
-            // 3. Validação da Senha via Hash e Salt
+            
             bool senhaValida = PasswordHelper.VerificarSenha(senha, usuario.SenhaHash, usuario.SenhaSalt);
             if (!senhaValida)
                 return (false, "E-mail ou senha incorretos.");
-            // 4. Inicia a sessão global
+            
             SessaoUsuario.IniciarSessao(usuario);
             return (true, "Login realizado com sucesso!");
         

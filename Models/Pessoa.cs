@@ -17,7 +17,7 @@ namespace KappukeekiApp.Models {
         [Required]
         public string SenhaSalt { get; set; } = string.Empty;
 
-        //herança
+        
         public Funcionario? Funcionario { get; set; }
         public Cliente? Cliente { get; set; }
 

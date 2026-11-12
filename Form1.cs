@@ -131,14 +131,14 @@ namespace KappukeekiApp {
         }
 
         private void Form1_Load_1(object sender, EventArgs e) {
-            // 1. Configura as tabelas para selecionar a linha inteira ao clicar
+            
             dgvCupcakes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCupcakes.MultiSelect = false;
             dgvPedidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvPedidos.MultiSelect = false;
-            // 2. Atualiza o título da janela com o usuário e setor
+            
             this.Text = $"Kappukeeki App - Conectado como: {SessaoUsuario.UsuarioAtual?.NomePessoa} ({SessaoUsuario.NomeSetor})";
-            // 3. Permissão de Cupcakes (Nível < 2 não pode cadastrar nem excluir cupcakes)
+            
             if (!SessaoUsuario.TemPermissaoMinima(2)) {
                 btnAdicionar.Enabled = false;
                 btnExcluir.Enabled = false;
@@ -147,8 +147,11 @@ namespace KappukeekiApp {
                 txtMassa.Enabled = false;
                 txtRecheio.Enabled = false;
             }
-            // 4. 🔒 REGRA RBAC: O botão de operador só aparece se for Administrador (Nível >= 3)
+            
             btnCadastrarOperador.Visible = SessaoUsuario.TemPermissaoMinima(3);
+            bool podeAlterarStatus = SessaoUsuario.TemPermissaoMinima(1);
+            btnStatusPronto.Enabled = podeAlterarStatus;
+            btnStatusFinalizado.Enabled = podeAlterarStatus;
         }
 
         private void btnExcluir_Click(object sender, EventArgs e) {
@@ -165,10 +168,10 @@ namespace KappukeekiApp {
             if (confirmacao != DialogResult.Yes) return;
             var cupcake = _context.Cupcakes.Find(cupcakeSelecionado.Id);
             if (cupcake == null) return;
-            // Verifica se há histórico de vendas
+            
             bool temPedidos = _context.ItensPedido.Any(i => i.CupcakeId == cupcake.Id);
             if (temPedidos) {
-                // Soft delete de proteção
+                
                 cupcake.Disponivel = false;
                 _context.SaveChanges();
                 AtualizarTabelas();
@@ -198,31 +201,38 @@ namespace KappukeekiApp {
                 MessageBox.Show("Selecione um pedido na tabela abaixo para alterar o status.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // Pega o valor da coluna "Id" da linha atualmente selecionada no DataGridView
-            int pedidoId = Convert.ToInt32(dgvPedidos.CurrentRow.Cells["Id"].Value);
 
-            var pedido = _context.Pedidos.Find(pedidoId);
-            if (pedido == null) {
-                MessageBox.Show("Pedido não encontrado no banco de dados.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (!SessaoUsuario.TemPermissaoMinima(1)) {
+                MessageBox.Show("Você não possui permissão para alterar o status de pedidos.", "Acesso Negado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // Altera o status e salva no banco SQLite
-            pedido.Status = novoStatus;
-            _context.SaveChanges();
-            // Atualiza a tabela na tela para mostrar o novo status
-            AtualizarTabelas();
-            MessageBox.Show(
-                $"Status do pedido {pedido.CodigoRetirada} alterado para '{novoStatus}' com sucesso!",
-                "Status Atualizado",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+
+            if (dgvPedidos.CurrentRow == null) {
+                int pedidoId = Convert.ToInt32(dgvPedidos.CurrentRow.Cells["Id"].Value);
+
+                var pedido = _context.Pedidos.Find(pedidoId);
+                if (pedido == null) {
+                    MessageBox.Show("Pedido não encontrado no banco de dados.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                
+                pedido.Status = novoStatus;
+                _context.SaveChanges();
+                
+                AtualizarTabelas();
+                MessageBox.Show(
+                    $"Status do pedido {pedido.CodigoRetirada} alterado para '{novoStatus}' com sucesso!",
+                    "Status Atualizado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
         }
-        // Evento do botão "Pronto para Retirada"
+        
         private void btnStatusPronto_Click(object sender, EventArgs e) {
             AlterarStatusPedidoSelecionado("Pronto para Retirada");
         }
-        // Evento do botão "Finalizar Pedido"
+        
         private void btnStatusFinalizado_Click(object sender, EventArgs e) {
             AlterarStatusPedidoSelecionado("Finalizado");
         }
